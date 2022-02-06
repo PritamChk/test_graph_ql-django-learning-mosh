@@ -25,7 +25,7 @@ from django.db.models import (
 
 T: bool = True  # True
 F: bool = False  # False
-STR_MAX_LENGTH: int = 255
+STR_MAX_LENGTH: int = 300
 
 # _________________________________________________
 
@@ -33,6 +33,9 @@ STR_MAX_LENGTH: int = 255
 class Collection(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
 
+class Promotion(Model):
+    description = CharField(max_length=STR_MAX_LENGTH)
+    discount_percentage : DecimalField = DecimalField(max_digits=4,decimal_places=1)  
 
 class Product(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
@@ -41,6 +44,7 @@ class Product(Model):
     inventory: PositiveIntegerField = PositiveIntegerField()
     last_updated: DateTimeField = DateTimeField(auto_now=True)
     collection = ForeignKey(Collection, on_delete=PROTECT)
+    promotions = ManyToManyField("Promotion")
 
 
 class Customer(Model):
