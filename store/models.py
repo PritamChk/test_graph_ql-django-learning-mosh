@@ -18,7 +18,8 @@ from django.db.models import (
     ManyToManyField,
     ForeignKey,
     CASCADE,
-    PROTECT
+    PROTECT,
+    SET_NULL
 )
 
 # -----------------------------------------------
@@ -32,10 +33,14 @@ STR_MAX_LENGTH: int = 300
 
 class Collection(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
+    featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T)
+
 
 class Promotion(Model):
     description = CharField(max_length=STR_MAX_LENGTH)
-    discount_percentage : DecimalField = DecimalField(max_digits=4,decimal_places=1)  
+    discount_percentage: DecimalField = DecimalField(
+        max_digits=4, decimal_places=1)
+
 
 class Product(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
