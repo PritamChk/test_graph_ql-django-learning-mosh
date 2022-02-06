@@ -8,6 +8,7 @@ graphene-django = ">=2.0"
 autopep8 = "*"
 django = "==4.0.2"
 django-ninja = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
