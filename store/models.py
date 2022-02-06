@@ -37,7 +37,7 @@ class Collection(Model):
     # featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T,related_name="+")
     
     def __str__(self) -> str:
-        return f"Collection : {self.title}"
+        return self.title
     
     class Meta:
         ordering = ["title"]
@@ -82,10 +82,13 @@ class Customer(Model):
     last_name: CharField = CharField(max_length=STR_MAX_LENGTH)
     email: EmailField = EmailField(unique=T)
     phone: CharField = CharField(max_length=14, null=F)
-    birth_date: DateField = DateField(null=T)
+    birth_date: DateField = DateField(null=True)
     membership: CharField = CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=__MEMBERSHIP_BRONZE__)
 
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+    
     class Meta:
         indexes = [Index(fields=[
                 "first_name",
