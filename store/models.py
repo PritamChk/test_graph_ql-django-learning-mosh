@@ -34,13 +34,19 @@ STR_MAX_LENGTH: int = 300
 
 class Collection(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
-    featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T,related_name="+")
+    # featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T,related_name="+")
+    
+    def __str__(self) -> str:
+        return f"Collection : {self.title}"
+    
+    class Meta:
+        ordering = ["title"]
 
 
-class Promotion(Model):
-    description = CharField(max_length=STR_MAX_LENGTH)
-    discount_percentage: DecimalField = DecimalField(
-        max_digits=4, decimal_places=1)
+# class Promotion(Model):
+#     description = CharField(max_length=STR_MAX_LENGTH)
+#     discount: DecimalField = DecimalField(
+#         max_digits=4, decimal_places=1)
 
 
 class Product(Model):
@@ -49,8 +55,15 @@ class Product(Model):
     price: DecimalField = DecimalField(max_digits=10, decimal_places=2)
     inventory: PositiveIntegerField = PositiveIntegerField()
     last_updated: DateTimeField = DateTimeField(auto_now=True)
-    belongs_to_collection = ForeignKey(Collection, on_delete=PROTECT)
-    promotions = ManyToManyField("Promotion")
+    collection = ForeignKey(Collection, on_delete=PROTECT,null=T)
+    # promotions = ManyToManyField("Promotion"
+    # 
+    
+    def __str__(self) -> str:
+        return self.title
+    
+    class Meta:
+        ordering = ["title","price","inventory"]
 
 
 class Customer(Model):
