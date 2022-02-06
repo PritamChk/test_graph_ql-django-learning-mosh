@@ -48,7 +48,7 @@ class Product(Model):
     price: DecimalField = DecimalField(max_digits=10, decimal_places=2)
     inventory: PositiveIntegerField = PositiveIntegerField()
     last_updated: DateTimeField = DateTimeField(auto_now=True)
-    collection = ForeignKey(Collection, on_delete=PROTECT)
+    belongs_to_collection = ForeignKey(Collection, on_delete=PROTECT)
     promotions = ManyToManyField("Promotion")
 
 
@@ -98,7 +98,7 @@ class Order(Model):
 
 class OrderItem(Model):
     order = ForeignKey("Order", on_delete=PROTECT)
-    product = ForeignKey("Porduct", on_delete=PROTECT)
+    product = ForeignKey("Product", on_delete=PROTECT)
     quantity = PositiveSmallIntegerField()
     unit_cost = DecimalField(max_digits=10, decimal_places=2)
 
