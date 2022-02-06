@@ -22,6 +22,7 @@ from django.db.models import (
     SET_NULL
 )
 
+from django.db.models import Index
 # -----------------------------------------------
 
 T: bool = True  # True
@@ -33,7 +34,7 @@ STR_MAX_LENGTH: int = 300
 
 class Collection(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
-    featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T)
+    featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T,related_name="+")
 
 
 class Promotion(Model):
@@ -72,6 +73,11 @@ class Customer(Model):
     membership: CharField = CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=__MEMBERSHIP_BRONZE__)
 
+    class Meta:
+        indexes = [Index(fields=[
+                "first_name",
+                "last_name"
+            ])]
 
 class Address(Model):
     address_details: TextField = TextField()
