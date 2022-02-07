@@ -1,3 +1,5 @@
+from re import search
+from django.core.validators import MinValueValidator
 
 from django.db.models import (
     Model,
@@ -34,29 +36,32 @@ STR_MAX_LENGTH: int = 300
 
 class Collection(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
-    # featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T,related_name="+")
+    featured_products = ForeignKey("Product", on_delete=SET_NULL, null=T,related_name="+",blank=T)
     
     def __str__(self) -> str:
         return self.title
     
     class Meta:
         ordering = ["title"]
+        
 
 
-# class Promotion(Model):
-#     description = CharField(max_length=STR_MAX_LENGTH)
-#     discount: DecimalField = DecimalField(
-#         max_digits=4, decimal_places=1)
+class Promotion(Model):
+    description = CharField(max_length=STR_MAX_LENGTH)
+    discount: DecimalField = DecimalField(
+        max_digits=4, decimal_places=1)
 
 
+    
 class Product(Model):
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
-    description: TextField = TextField()
-    price: DecimalField = DecimalField(max_digits=10, decimal_places=2)
+    description: TextField = TextField(null=T,blank=T)
+    price: DecimalField = DecimalField(max_digits=10, decimal_places=2, 
+                                       validators=[MinValueValidator(0)])
     inventory: PositiveIntegerField = PositiveIntegerField()
     last_updated: DateTimeField = DateTimeField(auto_now=True)
     collection = ForeignKey(Collection, on_delete=PROTECT,null=T)
-    # promotions = ManyToManyField("Promotion"
+    promotions = ManyToManyField("Promotion",blank=True)
     # 
     
     def __str__(self) -> str:
@@ -82,7 +87,7 @@ class Customer(Model):
     last_name: CharField = CharField(max_length=STR_MAX_LENGTH)
     email: EmailField = EmailField(unique=T)
     phone: CharField = CharField(max_length=14, null=F)
-    birth_date: DateField = DateField(null=True)
+    birth_date: DateField = DateField(null=True,blank=T)
     membership: CharField = CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=__MEMBERSHIP_BRONZE__)
 
@@ -113,7 +118,7 @@ class Order(Model):
     ]
 
     placed_at: DateTimeField = DateTimeField(auto_now_add=T)
-    payment_status: CharField(
+    payment_status:CharField = CharField(
         max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
     customer = ForeignKey("Customer", on_delete=PROTECT)
 
@@ -123,6 +128,9 @@ class OrderItem(Model):
     product = ForeignKey("Product", on_delete=PROTECT)
     quantity = PositiveSmallIntegerField()
     unit_cost = DecimalField(max_digits=10, decimal_places=2)
+    
+    def __str__(self) -> str:
+        return f"order_id : {self.id} || Product Price : {self.product.price}"
 
 
 class Cart(Model):
