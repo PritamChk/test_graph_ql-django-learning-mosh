@@ -102,3 +102,8 @@ class OrderItemAdmin(ModelAdmin):
     def original_mrp(self,orderitem:OrderItem):
         return orderitem.product.price
 
+@admin.register(Promotion)
+class PromotionAdmin(ModelAdmin):
+    list_display = ["id","description","discount"]
+    list_editable = ["discount",]
+    ordering = ["-discount"]

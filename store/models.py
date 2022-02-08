@@ -52,6 +52,8 @@ class Promotion(Model):
     discount: DecimalField = DecimalField(
         max_digits=4, decimal_places=1)
 
+    def __str__(self) -> str:
+        return self.description
 
     
 class Product(Model):
