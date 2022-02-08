@@ -138,8 +138,13 @@ class OrderItem(Model):
 class Cart(Model):
     created_at: DateTimeField = DateTimeField(auto_now_add=T)
 
+    def __str__(self) -> str:
+        return f"{self.id} - created at : {self.created_at.date()}"
 
 class CartItems(Model):
     cart = ForeignKey("Cart", on_delete=CASCADE)
     product = ForeignKey("Product", on_delete=CASCADE)
     quantity = PositiveSmallIntegerField()
+
+    def __str__(self) -> str:
+        return self.product.title

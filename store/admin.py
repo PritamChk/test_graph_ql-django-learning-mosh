@@ -51,11 +51,26 @@ class ProductAdmin(ModelAdmin):
     autocomplete_fields = ["collection"]
 
 
-admin.site.register(Cart)
 
-admin.site.register(CartItems)
+class CartItemsInline(TabularInline):
+    autocomplete_fields = ["product",]
+    min_num = 0
+    extra =1
+    max_num = 10
+    model = CartItems
+    
+
+@admin.register(CartItems)
+class CartItemsAdmin(ModelAdmin):
+    list_display = ["cart_id","product","quantity"]
+    list_editable = ["quantity"]
 
 
+
+
+@admin.register(Cart)
+class CartAdmin(ModelAdmin):
+    inlines = [CartItemsInline]
 
 class OrderItemsInline(TabularInline):
     autocomplete_fields = ["product",]
@@ -63,8 +78,6 @@ class OrderItemsInline(TabularInline):
     extra =1
     max_num = 10
     model = OrderItem
-
-
 
 @admin.register(Order)
 class OrderAdmin(ModelAdmin):
