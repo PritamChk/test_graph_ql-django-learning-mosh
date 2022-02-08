@@ -89,6 +89,11 @@ DATABASES = {
         "USER":"root",
         "PASSWORD":"pantua"
     }
+    
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME':  'storefront.db',
+    # }
 }
 
 
