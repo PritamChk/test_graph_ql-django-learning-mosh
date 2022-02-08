@@ -10,7 +10,7 @@ from django.db.models import (
     DecimalField,
     PositiveIntegerField,
     PositiveSmallIntegerField,
-    EmailField
+    EmailField,SlugField
 )
 
 # ---------------------------------------------
@@ -25,6 +25,7 @@ from django.db.models import (
 )
 
 from django.db.models import Index
+# from django.forms import SlugField
 # -----------------------------------------------
 
 T: bool = True  # True
@@ -54,12 +55,13 @@ class Promotion(Model):
 
     
 class Product(Model):
+    slug = SlugField(max_length=STR_MAX_LENGTH)
     title: CharField = CharField(max_length=STR_MAX_LENGTH)
     description: TextField = TextField(null=T,blank=T)
     price: DecimalField = DecimalField(max_digits=10, decimal_places=2, 
                                        validators=[MinValueValidator(0)])
     inventory: PositiveIntegerField = PositiveIntegerField()
-    last_updated: DateTimeField = DateTimeField(auto_now=True)
+    last_update: DateTimeField = DateTimeField(auto_now=True)
     collection = ForeignKey(Collection, on_delete=PROTECT,null=T)
     promotions = ManyToManyField("Promotion",blank=True)
     # 
