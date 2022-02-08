@@ -1,6 +1,10 @@
-import graphene
+import graphene as gfn
+from graphene_django import DjangoObjectType as DOT
 
-class Query(graphene.ObjectType):
-    hello = graphene.String(default_value="Hi!")
 
-schema = graphene.Schema(query=Query)
+
+
+class Query(gfn.ObjectType):
+    hello = gfn.String(default_value="Hi!")
+
+schema = gfn.Schema(query=Query)
