@@ -101,5 +101,4 @@ class OrderItemAdmin(ModelAdmin):
     @admin.display()
     def original_mrp(self,orderitem:OrderItem):
         return orderitem.product.price
-    
-# Register your models here.
+
