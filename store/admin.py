@@ -9,7 +9,7 @@ admin.site.index_title = "Admin"
 @admin.register(Collection)
 class CollectionAdmin(ModelAdmin):
     list_display = ["title"]
-    search_fields = ["title"]
+    search_fields = ["title__istartswith"]
     empty_value_display = '-empty-'
 
 
